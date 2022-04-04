@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { initializeLogger, initializeDataSource } from "./_frameworks";
 
 import { Meter } from "./meters/meter.entity";
-import { MeterChange } from "./meters/meterChange.entity";
+import { MeterChange } from "./meters/changes/meterChange.entity";
 
 dotenv.config();
 

@@ -9,7 +9,7 @@ import {
   UpdateDateColumn
 } from "typeorm";
 
-import { MeterChange } from "./meterChange.entity";
+import { MeterChange } from "./changes/meterChange.entity";
 
 @Entity()
 export class Meter {
