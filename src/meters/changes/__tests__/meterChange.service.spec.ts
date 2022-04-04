@@ -26,8 +26,8 @@ afterAll(
   }
 );
 
-describe("Meter Service", (): void => {
-  it("Create a new meter", async (): Promise<void> => {
+describe("Meter Changes Service", (): void => {
+  it("should create a new meter change", async (): Promise<void> => {
     const meterChangeService = new MeterChangeService(dataSource);
 
     const data: DeepPartial<MeterChange> = {
