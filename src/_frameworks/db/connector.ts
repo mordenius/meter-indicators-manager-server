@@ -1,9 +1,9 @@
-import { DataSource, DataSourceOptions, EntitySchema } from "typeorm";
+import { DataSource, DataSourceOptions } from "typeorm";
 import { Logger } from "../logger";
 
 export async function initialize(
   logger: Logger,
-  entities: EntitySchema[]
+  entities: Function[]
 ): Promise<DataSource> {
   const dataSourceOptions: DataSourceOptions = {
     type: "mysql",
