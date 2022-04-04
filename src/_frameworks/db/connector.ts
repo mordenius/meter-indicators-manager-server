@@ -1,4 +1,5 @@
 import { DataSource, DataSourceOptions } from "typeorm";
+import { SnakeNamingStrategy } from './snakeNaming.strategy';
 import { Logger } from "../logger";
 
 const isDevOrTestEnv = (): boolean =>
@@ -16,7 +17,8 @@ export async function initialize(
     password: process.env.DB_PSWD,
     database: process.env.DB_NAME,
     entities,
-    synchronize: isDevOrTestEnv()
+    synchronize: isDevOrTestEnv(),
+    namingStrategy: new SnakeNamingStrategy(),
   };
 
   const dataSource = new DataSource(dataSourceOptions);
