@@ -4,15 +4,15 @@ import {
   DeleteDateColumn,
   Entity,
   Generated,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
 
-import { MeterChange } from "./meterChange.entity";
+import { Meter } from "./meter.entity";
 
 @Entity()
-export class Meter {
+export class MeterChange {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,17 +20,17 @@ export class Meter {
   @Generated("uuid")
   uuid: string;
 
-  @Column()
-  name: string;
-
-  @Column({ default: 0 })
-  currentValue: number;
-
-  @OneToMany(
-    () => MeterChange,
-    change => change.meter
+  @ManyToOne(
+    () => Meter,
+    meter => meter.changes
   )
-  changes: MeterChange[];
+  meter: Meter;
+
+  @Column()
+  previousValue: number;
+
+  @Column()
+  currentValue: number;
 
   @CreateDateColumn()
   createdAt: Date;
