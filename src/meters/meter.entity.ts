@@ -4,6 +4,7 @@ import {
   DeleteDateColumn,
   Entity,
   Generated,
+  JoinTable,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
@@ -30,6 +31,10 @@ export class Meter {
     () => MeterChange,
     change => change.meter
   )
+  @JoinTable({
+    joinColumn: { name: "meter_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "meter_change_id", referencedColumnName: "id" }
+  })
   changes: MeterChange[];
 
   @CreateDateColumn()
