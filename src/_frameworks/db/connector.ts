@@ -1,6 +1,9 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 import { Logger } from "../logger";
 
+const isDevOrTestEnv = (): boolean =>
+  process.env.APP_ENV === "development" || process.env.APP_ENV === "test";
+
 export async function initialize(
   logger: Logger,
   entities: Function[]
@@ -12,7 +15,8 @@ export async function initialize(
     username: process.env.DB_USER,
     password: process.env.DB_PSWD,
     database: process.env.DB_NAME,
-    entities
+    entities,
+    synchronize: isDevOrTestEnv()
   };
 
   const dataSource = new DataSource(dataSourceOptions);
