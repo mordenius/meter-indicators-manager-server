@@ -32,6 +32,9 @@ export class MeterChange {
   @Column()
   currentValue: number;
 
+  @Column()
+  commitedAt: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 
