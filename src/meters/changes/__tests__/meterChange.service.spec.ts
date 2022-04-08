@@ -3,7 +3,7 @@ import { DataSource, DeepPartial } from "typeorm";
 
 import { Meter } from "../../meter.entity";
 import { MeterChange } from "../meterChange.entity";
-import { MeterChangeService } from "../meterChange.service";
+import { MeterChangesService } from "../meterChanges.service";
 
 import {
   initializeLogger,
@@ -28,7 +28,7 @@ afterAll(
 
 describe("Meter Changes Service", (): void => {
   it("should create a new meter change", async (): Promise<void> => {
-    const meterChangeService = new MeterChangeService(dataSource);
+    const meterChangeService = new MeterChangesService(dataSource);
 
     const data: DeepPartial<MeterChange> = {
       previousValue: 0,

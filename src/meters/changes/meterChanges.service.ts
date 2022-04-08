@@ -3,7 +3,7 @@ import { Tool } from "../../_frameworks";
 
 import { MeterChange } from "./meterChange.entity";
 
-export class MeterChangeService {
+export class MeterChangesService {
   private readonly repository: Repository<MeterChange>;
 
   constructor(@Tool("dataSource") dataSource: DataSource) {
