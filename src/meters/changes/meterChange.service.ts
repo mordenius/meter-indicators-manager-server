@@ -1,10 +1,12 @@
 import { DataSource, DeepPartial, Repository } from "typeorm";
+import { Tool } from "../../_frameworks";
+
 import { MeterChange } from "./meterChange.entity";
 
 export class MeterChangeService {
   private readonly repository: Repository<MeterChange>;
 
-  constructor(dataSource: DataSource) {
+  constructor(@Tool("dataSource") dataSource: DataSource) {
     this.repository = dataSource.getRepository(MeterChange);
   }
 

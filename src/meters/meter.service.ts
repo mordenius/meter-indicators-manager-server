@@ -1,4 +1,6 @@
-import { DataSource, DeepPartial, In, Repository } from "typeorm";
+import { DataSource, DeepPartial, Repository } from "typeorm";
+import { Inject, Tool, Logger } from "../_frameworks";
+
 import { Meter } from "./meter.entity";
 import { MeterChangeService } from "./changes/meterChange.service";
 
@@ -8,7 +10,9 @@ export class MeterService {
   private readonly searchQuery = '"name" ilike :search';
 
   constructor(
-    dataSource: DataSource,
+    @Tool("dataSource") dataSource: DataSource,
+    @Tool("logger") logger: Logger,
+    @Inject(MeterChangeService)
     private readonly meterChangeService: MeterChangeService
   ) {
     this.repository = dataSource.getRepository(Meter);
