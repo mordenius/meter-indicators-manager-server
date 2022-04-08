@@ -1,5 +1,8 @@
 import dotenv from "dotenv";
-import { initializeLogger, initializeDataSource } from "./_frameworks";
+import {
+  initializeLogger,
+  initializeDataSource,
+} from "./_frameworks";
 
 import { Meter } from "./meters/meter.entity";
 import { MeterChange } from "./meters/changes/meterChange.entity";
@@ -9,7 +12,10 @@ dotenv.config();
 const logger = initializeLogger();
 
 async function main(): Promise<void> {
-  const dataSource = await initializeDataSource(logger, [Meter, MeterChange]);
+  await initializeDataSource({
+    logger,
+    entities: [Meter, MeterChange]
+  });
 }
 
 main()
@@ -17,5 +23,6 @@ main()
     logger.info("Application successful started");
   })
   .catch(err => {
+    console.log(err);
     logger.error("Application launch was failed", err);
   });

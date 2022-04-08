@@ -1,4 +1,5 @@
 import winston, { createLogger, Logger } from "winston";
+import { ReqisterTool } from "./../core";
 
 export { Logger };
 
@@ -7,7 +8,8 @@ process.on("unhandledRejection", error => {
   winston.error("unhandledRejection", error);
 });
 
-export function init(): Logger {
+
+function _initialize(): Logger {
   const logConfiguration = {
     transports: [new winston.transports.Console()],
     format: winston.format.combine(
@@ -24,3 +26,5 @@ export function init(): Logger {
   
   return createLogger(logConfiguration);
 }
+
+export const initialize = ReqisterTool<Logger>("logger", _initialize);

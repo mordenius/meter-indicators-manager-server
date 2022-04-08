@@ -1,14 +1,21 @@
 import { DataSource, DataSourceOptions } from "typeorm";
-import { SnakeNamingStrategy } from './snakeNaming.strategy';
+import { ReqisterTool } from "../core/";
 import { Logger } from "../logger";
+
+import { SnakeNamingStrategy } from "./snakeNaming.strategy";
+
+export interface DatabaseOptions {
+  logger: Logger;
+  entities: Function[];
+}
 
 const isDevOrTestEnv = (): boolean =>
   process.env.APP_ENV === "development" || process.env.APP_ENV === "test";
 
-export async function initialize(
-  logger: Logger,
-  entities: Function[]
-): Promise<DataSource> {
+export async function _initialize({
+  logger,
+  entities
+}: DatabaseOptions): Promise<DataSource> {
   const dataSourceOptions: DataSourceOptions = {
     type: "mysql",
     host: process.env.DB_HOST,
@@ -18,7 +25,7 @@ export async function initialize(
     database: process.env.DB_NAME,
     entities,
     synchronize: isDevOrTestEnv(),
-    namingStrategy: new SnakeNamingStrategy(),
+    namingStrategy: new SnakeNamingStrategy()
   };
 
   const dataSource = new DataSource(dataSourceOptions);
@@ -33,3 +40,8 @@ export async function initialize(
 
   return dataSource;
 }
+
+export const initialize = ReqisterTool<Promise<DataSource>>(
+  "dataSource",
+  _initialize
+);
