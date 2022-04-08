@@ -9,16 +9,18 @@ import { MeterChangeService } from "../changes/meterChange.service";
 
 import {
   initializeLogger,
-  initializeDataSource
+  initializeDataSource,
+  Logger,
 } from "../../_frameworks/index";
 
+let logger: Logger;
 let dataSource: DataSource;
 
 beforeAll(
   async (): Promise<void> => {
     dotenv.config();
-    const logger = initializeLogger();
-    dataSource = await initializeDataSource(logger, [Meter, MeterChange]);
+    logger = initializeLogger();
+    dataSource = await initializeDataSource({ logger, entities: [Meter, MeterChange] });
   }
 );
 
@@ -30,7 +32,7 @@ afterAll(
 describe("Meter Service", (): void => {
   it("should create a new meter", async (): Promise<void> => {
     const meterChangeService = new MeterChangeService(dataSource);
-    const meterService = new MeterService(dataSource, meterChangeService);
+    const meterService = new MeterService(dataSource, logger, meterChangeService);
 
     const data: DeepPartial<Meter> = {
       name: "TEST_METER",
@@ -45,7 +47,7 @@ describe("Meter Service", (): void => {
 
   it("should create a new meter with 0 as default value", async (): Promise<void> => {
     const meterChangeService = new MeterChangeService(dataSource);
-    const meterService = new MeterService(dataSource, meterChangeService);
+    const meterService = new MeterService(dataSource, logger, meterChangeService);
 
     const DEFAULT_VALUE = 0;
 

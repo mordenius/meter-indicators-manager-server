@@ -16,7 +16,7 @@ beforeAll(
   async (): Promise<void> => {
     dotenv.config();
     const logger = initializeLogger();
-    dataSource = await initializeDataSource(logger, [Meter, MeterChange]);
+    dataSource = await initializeDataSource({ logger, entities: [Meter, MeterChange] });
   }
 );
 
@@ -32,7 +32,8 @@ describe("Meter Changes Service", (): void => {
 
     const data: DeepPartial<MeterChange> = {
       previousValue: 0,
-      currentValue: 1
+      currentValue: 1,
+      commitedAt: "2022-04-04T01:44:34.562Z"
     };
 
     const change = await meterChangeService.create(data);
