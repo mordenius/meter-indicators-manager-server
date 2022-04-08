@@ -12,7 +12,7 @@ import {
 
 import { MeterChange } from "./changes/meterChange.entity";
 
-@Entity()
+@Entity("meters")
 export class Meter {
   @PrimaryGeneratedColumn()
   id: number;
