@@ -44,6 +44,7 @@
     "aws-sdk": "^2.1106.0",
     "dotenv": "^16.0.0",
     "mysql": "^2.18.1",
+    "path-to-regexp": "^6.2.0",
     "typeorm": "^0.3.4",
     "winston": "^3.6.0"
   }
