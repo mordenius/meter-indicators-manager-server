@@ -1,11 +1,15 @@
 import dotenv from "dotenv";
+
 import {
   initializeLogger,
   initializeDataSource,
+  initializeServer
 } from "./_frameworks";
 
 import { Meter } from "./meters/meter.entity";
 import { MeterChange } from "./meters/changes/meterChange.entity";
+
+import { MetersController } from "./meters/meters.controller";
 
 dotenv.config();
 
@@ -15,6 +19,11 @@ async function main(): Promise<void> {
   await initializeDataSource({
     logger,
     entities: [Meter, MeterChange]
+  });
+
+  await initializeServer({
+    logger,
+    controllers: [MetersController]
   });
 }
 
