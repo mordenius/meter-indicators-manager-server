@@ -6,7 +6,7 @@
   "scripts": {
     "test": "APP_ENV=test jest",
     "start": "node ./dist/index.js",
-    "start:dev": "nodemon --exec npm run babel-node --inspect ./src/index.ts ",
+    "start:dev": "nodemon --exec APP_ENV=development npm run babel-node --inspect ./src/index.ts ",
     "babel-node": "babel-node ./src/index.ts --extensions \".ts\"",
     "build": "babel src -d dist --extensions \".ts\"",
     "clean": "tsc --build --clean",

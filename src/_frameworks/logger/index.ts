@@ -1,16 +1,18 @@
 import winston, { createLogger, Logger } from "winston";
-import { ReqisterTool } from "./../core";
+import { ReqisterTool, flow } from "./../core";
 
 export { Logger };
 
-process.on("unhandledRejection", error => {
-  // Will print "unhandledRejection err is not defined"
-  winston.error("unhandledRejection", error);
-});
+function applyUnhandledRejection(logger: Logger): Logger {
+  process.on("unhandledRejection", error => {
+    logger.error("unhandledRejection", error);
+  });
 
+  return logger;
+}
 
-function _initialize(): Logger {
-  const logConfiguration = {
+function compileLoggerOptions(): winston.LoggerOptions {
+  return {
     transports: [new winston.transports.Console()],
     format: winston.format.combine(
       winston.format.timestamp({
@@ -21,10 +23,17 @@ function _initialize(): Logger {
       )
     ),
     handleExceptions: true,
-    silent: process.env.APP_ENV === "test"
+    silent: process.env.APP_ENV === "test",
+    level: process.env.APP_ENV === "development" ? "debug" : "info"
   };
-  
-  return createLogger(logConfiguration);
+}
+
+function _initialize(): Logger {
+  return flow<Logger>(
+    compileLoggerOptions,
+    createLogger,
+    applyUnhandledRejection
+  );
 }
 
 export const initialize = ReqisterTool<Logger>("logger", _initialize);
