@@ -1,13 +1,20 @@
-import { DataSource, DeepPartial, Repository } from "typeorm";
+import {
+  DataSource,
+  DeepPartial,
+  Repository,
+  ILike,
+  FindOperator
+} from "typeorm";
 import { Inject, Tool, Logger } from "../_frameworks";
 
 import { Meter } from "./meter.entity";
 import { MeterChangesService } from "./changes/meterChanges.service";
+import { query } from "winston";
 
 export class MetersService {
   private readonly repository: Repository<Meter>;
   private readonly relations = ["changes"];
-  private readonly searchQuery = '"name" ilike :search';
+  private readonly searchBy = ["name", "id"];
 
   constructor(
     @Tool("dataSource") dataSource: DataSource,
@@ -44,9 +51,14 @@ export class MetersService {
     limit: number;
     page: number;
   }): Promise<[Meter[], number]> {
+    const whereCondition = this.searchBy.reduce(
+      (query, field) => [...query, { [field]: ILike(`%${search}%`) }],
+      [] as { [key: string]: FindOperator<string> }[]
+    );
+
     return this.repository
       .createQueryBuilder()
-      .where(this.searchQuery, { search: `%${search}%` })
+      .where(whereCondition)
       .take(limit)
       .skip((page - 1) * limit)
       .getManyAndCount();
@@ -59,26 +71,32 @@ export class MetersService {
     });
   }
 
-  async create(data: DeepPartial<Meter>): Promise<Meter> {
+  async create(
+    data: DeepPartial<Meter> & DeepPartial<Meter>[]
+  ): Promise<Meter[]> {
     const meter = this.repository.create(data);
     return this.repository.save(meter);
   }
 
-  async update(id: number, newValue: number): Promise<Meter> {
+  async update(
+    id: number,
+    { name, currentValue }: DeepPartial<Meter>
+  ): Promise<Meter> {
     const meter = await this.repository.findOneBy({ id });
 
     if (meter == null) {
       throw new Error(`Meter #${id} not found`);
     }
 
-    meter.currentValue = newValue;
+    meter.currentValue = currentValue || meter.currentValue;
+    meter.name = name || meter.name;
 
     await Promise.all([
       this.repository.save(meter),
       this.meterChangeService.create({
         meter: meter,
         previousValue: 0,
-        currentValue: newValue
+        currentValue: currentValue
       })
     ]);
 
