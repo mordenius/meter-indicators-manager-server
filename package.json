@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "APP_ENV=test jest",
+    "test:api": "APP_ENV=test jest __tests__/**spec.ts",
     "start": "node ./dist/index.js",
     "start:dev": "nodemon --exec APP_ENV=development npm run babel-node --inspect ./src/index.ts ",
     "babel-node": "babel-node ./src/index.ts --extensions \".ts\"",
