@@ -143,7 +143,16 @@ export async function route(
   });
 
   stream.on("end", async function() {
-    incomingData.body = Buffer.concat(chunks as any);
+    if (
+      headers["content-type"] === "application/json" &&
+      (headers[":method"] === Method.POST ||
+        headers[":method"] === Method.PATCH ||
+        headers[":method"] === Method.PUT)
+    ) {
+      incomingData.body = JSON.parse(Buffer.concat(chunks as any).toString());
+    } else {
+      incomingData.body = Buffer.concat(chunks as any).toString();
+    }
 
     if (!handler) {
       return;
@@ -168,6 +177,11 @@ export async function route(
       });
 
       stream.end(`{ "message": "${(err as Error)?.message}" }`);
+    }
+
+    if (stream.headersSent) {
+      stream.end(result || "Done");
+      return;
     }
 
     if (typeof result === "object") {
