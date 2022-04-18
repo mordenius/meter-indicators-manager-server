@@ -1,3 +1,4 @@
+import { ServerHttp2Stream } from "http2";
 import { DeepPartial } from "typeorm";
 import {
   Controller,
@@ -8,7 +9,9 @@ import {
   Query,
   Post,
   Patch,
-  Body
+  Body,
+  Stream,
+  StatusCode
 } from "../_frameworks";
 import { Meter } from "./meter.entity";
 import { MetersService } from "./meters.service";
@@ -30,7 +33,6 @@ export class MetersController {
     @Query("page") page: number,
     @Query("search") search: string
   ): Promise<Paginate<Meter[]>> {
-    console.log(limit, page, search)
     if (search) {
       const [data, count] = await this.service.search({ page, limit, search });
       return {
@@ -48,32 +50,57 @@ export class MetersController {
   }
 
   @Get(":id")
-  getById(@Param("id") id: string): Promise<Meter | null> {
-    console.log("getById", id)
+  async getById(
+    @Param("id") id: string,
+    @Stream() stream: ServerHttp2Stream
+  ): Promise<{ data: Meter | null } | { message: string }> {
     if (Number.isNaN(Number(id))) {
       throw new Error("Wrong id parameter");
     }
-    return this.service.findOne(Number(id));
+
+    const meter = await this.service.findOne(Number(id));
+
+    if (!meter) {
+      stream.respond({
+        "content-type": "application/json",
+        ":status": 404
+      });
+
+      return JSON.stringify({
+        message: `Meter with ID: ${id} was not found`
+      }) as any;
+    }
+
+    return { data: meter };
   }
 
   @Post()
-  create(@Body() body: DeepPartial<Meter>[]) {
-    return this.service.create(body);
+  async create(@Body() body: DeepPartial<Meter>[]): Promise<{ data: Meter[] }> {
+    const meters = await this.service.create(body);
+    return { data: meters };
   }
 
   @Patch(":id")
-  edit(@Param("id") id: string, @Body() body: DeepPartial<Meter>) {
+  async edit(
+    @Param("id") id: string,
+    @Body() body: DeepPartial<Meter>
+  ): Promise<{ data: Meter }> {
     if (Number.isNaN(Number(id))) {
       throw new Error("Wrong id parameter");
     }
-    return this.service.update(Number(id), body);
+    const meter = await this.service.update(Number(id), body);
+    return { data: meter };
   }
 
   @Delete(":id")
-  removeById(@Param("id") id: string): Promise<void> {
+  @StatusCode(204)
+  async removeById(@Param("id") id: string): Promise<{ message: string }> {
     if (Number.isNaN(Number(id))) {
       throw new Error("Wrong id parameter");
     }
-    return this.service.remove(Number(id));
+
+    await this.service.remove(Number(id));
+
+    return { message: "Done" };
   }
 }

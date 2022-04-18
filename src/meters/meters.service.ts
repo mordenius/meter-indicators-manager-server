@@ -36,7 +36,8 @@ export class MetersService {
       this.repository.find({
         relations: this.relations,
         take: limit,
-        skip: (page - 1) * limit
+        skip: (page - 1) * limit,
+        withDeleted: false,
       }),
       this.repository.count()
     ]);
@@ -67,14 +68,19 @@ export class MetersService {
   findOne(id: number): Promise<Meter | null> {
     return this.repository.findOne({
       where: { id },
-      relations: this.relations
+      relations: this.relations,
+      withDeleted: false,
     });
   }
 
+  create(data: DeepPartial<Meter>): Promise<Meter>;
+  create(data: DeepPartial<Meter>[]): Promise<Meter[]>;
   async create(
-    data: DeepPartial<Meter> & DeepPartial<Meter>[]
-  ): Promise<Meter[]> {
-    const meter = this.repository.create(data);
+    data: DeepPartial<Meter> | DeepPartial<Meter>[]
+  ): Promise<Meter | Meter[]> {
+    const meter = this.repository.create(
+      data as DeepPartial<Meter> & DeepPartial<Meter>[]
+    );
     return this.repository.save(meter);
   }
 
