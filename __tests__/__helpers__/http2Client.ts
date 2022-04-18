@@ -20,23 +20,27 @@ export function connectToServer() {
   client.on("error", err => console.error(err));
 }
 
-
 interface RequestParameters {
   path: string;
   method: Method;
 }
 
 interface Response<T> {
-  data: T;
+  body: T;
   headers: IncomingHttpHeaders & IncomingHttpStatusHeader;
   statusCode: number;
 }
 
-export function request<T>({
-  path,
-  method = Method.GET
-}: RequestParameters): Promise<Response<T>> {
-  const req = client.request({ ":path": path, ":method": method });
+export function request<T>(
+  { path, method = Method.GET }: RequestParameters,
+  body?: string
+): Promise<Response<T>> {
+  connectToServer();
+  const req = client.request({
+    ":path": path,
+    ":method": method,
+    "content-type": "application/json"
+  });
   let headers: IncomingHttpHeaders & IncomingHttpStatusHeader;
 
   req.on("response", (_headers, flags) => {
@@ -51,10 +55,9 @@ export function request<T>({
 
   return new Promise((resolve): void => {
     req.on("end", () => {
-      console.log(`\n${data}`);
       client.close();
       resolve({
-        data:
+        body:
           headers["content-type"] === "application/json"
             ? JSON.parse(data)
             : data,
@@ -62,6 +65,10 @@ export function request<T>({
         statusCode: Number(headers[":status"])
       });
     });
+
+    if (body) {
+      req.write(body, "utf-8");
+    }
     req.end();
   });
 }
