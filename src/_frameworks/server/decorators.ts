@@ -71,14 +71,16 @@ function applyMethodDecorator(method: string) {
           [key: string | symbol]: ParametersOrder;
         } = Reflect.getMetadata(PARAMETERS_ORDER_NETA, target.constructor);
 
-        for (const name in [
+        for (const name of [
           ServerIncomingStreamDataField.BODY,
           ServerIncomingStreamDataField.METHOD,
           ServerIncomingStreamDataField.STREAM,
           ServerIncomingStreamDataField.URL
         ]) {
           if (typeof (paramsOrder?.[key] as any)?.[name] === "number") {
-            args[paramsOrder?.[key]?.body as number] = (rests as any)[name];
+            args[
+              (paramsOrder?.[key] as any)?.[name] as number
+            ] = (rests as any)[name];
           }
         }
 

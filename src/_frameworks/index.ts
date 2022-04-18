@@ -11,7 +11,8 @@ export {
   Header,
   Param,
   Query,
-  Body
+  Body,
+  Stream,
 } from "./server/decorators";
 export { initialize as initializeServer } from "./server";
 export { Inject, Tool, ReqisterTool, flow } from "./core";
