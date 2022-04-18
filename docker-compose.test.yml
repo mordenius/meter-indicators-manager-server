@@ -1,0 +1,43 @@
+version: "3"
+services:
+  app:
+    image: meter-indicators-manager/server:test
+    container_name: meter-indicators-manager-server
+    command: [ "npm", "run", "test:api" ]
+    env_file:
+      - ./.env.test.docker
+    build:
+      context: ./
+      dockerfile: Dockerfile.test
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'meter_indicators_manager_test'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - db-data:/var/lib/mysql
+
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# # Names our volume
+volumes:
+  db-data:

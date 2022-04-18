@@ -12,7 +12,7 @@ import { MeterChange } from "./../../src/meters/changes/meterChange.entity";
 
 import { MetersController } from "./../../src/meters/meters.controller";
 
-dotenv.config({ path: ".env.test" });
+dotenv.config({ path: ".env.test.docker" });
 
 const logger = initializeLogger();
 

@@ -1,0 +1,16 @@
+FROM node:latest
+
+ARG PORT=8000
+ENV rootDir /usr/src/app
+
+RUN mkdir -p $rootDir
+
+WORKDIR $rootDir
+COPY package.json package-lock.json $rootDir/
+
+RUN npm ci
+RUN npm cache clean --force  
+
+COPY . $rootDir
+
+EXPOSE $PORT

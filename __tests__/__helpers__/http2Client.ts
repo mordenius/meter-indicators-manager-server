@@ -9,7 +9,7 @@ import {
 import { Method } from "../../src/_frameworks/server/constants";
 export { Method };
 
-const SERVER_BASE_URL = "https://localhost:8444";
+const SERVER_BASE_URL = `https://localhost:${process.env.PORT}`;
 
 let client: ClientHttp2Session;
 export function connectToServer() {
