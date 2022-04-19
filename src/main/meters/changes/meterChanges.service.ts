@@ -1,5 +1,5 @@
 import { DataSource, DeepPartial, Repository } from "typeorm";
-import { Tool } from "../../_frameworks";
+import { Tool } from "../../../_common";
 
 import { MeterChange } from "./meterChange.entity";
 

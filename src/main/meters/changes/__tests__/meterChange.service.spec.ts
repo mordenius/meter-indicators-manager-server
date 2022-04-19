@@ -8,7 +8,7 @@ import { MeterChangesService } from "../meterChanges.service";
 import {
   initializeLogger,
   initializeDataSource
-} from "../../../_frameworks/index";
+} from "../../../../_common/index";
 
 let dataSource: DataSource;
 

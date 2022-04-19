@@ -10,6 +10,8 @@
     "start": "node ./dist/index.js",
     "start:dev": "nodemon --exec APP_ENV=development npm run babel-node --inspect ./src/index.ts ",
     "babel-node": "babel-node ./src/index.ts --extensions \".ts\"",
+    "main:start:dev": "nodemon --exec APP_ENV=development npm run main:babel-node --inspect ./src/main/index.ts ",
+    "main:babel-node": "babel-node ./src/main/index.ts --extensions \".ts\"",
     "build": "babel src -d dist --extensions \".ts\"",
     "clean": "tsc --build --clean",
     "cert:dev": "mkdir -p cert && openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' -keyout ./cert/localhost-privkey.pem -out ./cert/localhost-cert.pem"

@@ -5,7 +5,7 @@ import {
   ILike,
   FindOperator
 } from "typeorm";
-import { Inject, Tool, Logger } from "../_frameworks";
+import { Inject, Tool, Logger } from "../../_common";
 
 import { Meter } from "./meter.entity";
 import { MeterChangesService } from "./changes/meterChanges.service";

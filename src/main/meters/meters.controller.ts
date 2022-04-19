@@ -12,7 +12,7 @@ import {
   Body,
   Stream,
   StatusCode
-} from "../_frameworks";
+} from "../../_common";
 import { Meter } from "./meter.entity";
 import { MetersService } from "./meters.service";
 

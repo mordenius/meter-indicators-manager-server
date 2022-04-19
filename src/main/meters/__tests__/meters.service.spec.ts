@@ -11,7 +11,7 @@ import {
   initializeLogger,
   initializeDataSource,
   Logger,
-} from "../../_frameworks/index";
+} from "../../../_common/index";
 
 let logger: Logger;
 let dataSource: DataSource;
