@@ -1,6 +1,5 @@
 import { DataSource, DataSourceOptions } from "typeorm";
-import { ReqisterTool } from "../index";
-import { Logger } from "../index";
+import { ReqisterTool, Logger, isDevOrTestEnv } from "../index";
 
 import { SnakeNamingStrategy } from "./snakeNaming.strategy";
 
@@ -8,9 +7,6 @@ export interface DatabaseOptions {
   logger: Logger;
   entities: Function[];
 }
-
-const isDevOrTestEnv = (): boolean =>
-  process.env.APP_ENV === "development" || process.env.APP_ENV === "test";
 
 export async function _initialize({
   logger,

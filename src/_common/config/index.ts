@@ -7,6 +7,11 @@ export enum Environment {
   TEST_DOCKER = "test.docker"
 }
 
+export const isDevOrTestEnv = (): boolean =>
+  process.env.APP_ENV === Environment.DEVELOPMENT ||
+  process.env.APP_ENV === Environment.TEST ||
+  process.env.APP_ENV === Environment.TEST_DOCKER;
+
 export function initialize(serviceName: string): dotenv.DotenvConfigOutput {
   let environment = defineEnvironment();
   return dotenv.config({

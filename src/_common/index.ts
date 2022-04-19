@@ -1,5 +1,9 @@
 export { Inject, Tool, ReqisterTool, flow } from "./core";
-export { Environment, initialize as initializeConfiguration } from "./config";
+export {
+  Environment,
+  initialize as initializeConfiguration,
+  isDevOrTestEnv
+} from "./config";
 export { Logger, initialize as initializeLogger } from "./logger";
 export {
   Controller,
