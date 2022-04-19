@@ -6,7 +6,7 @@ import {
   IncomingHttpHeaders
 } from "http2";
 
-import { Method } from "../../src/_frameworks/server/constants";
+import { Method } from "../../../_common/server/constants";
 export { Method };
 
 const SERVER_BASE_URL = `https://localhost:${process.env.PORT}`;

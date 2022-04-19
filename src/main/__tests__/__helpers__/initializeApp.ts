@@ -5,12 +5,12 @@ import {
   initializeLogger,
   initializeDataSource,
   initializeServer
-} from "./../../src/_frameworks";
+} from "../../_frameworks";
 
-import { Meter } from "./../../src/meters/meter.entity";
-import { MeterChange } from "./../../src/meters/changes/meterChange.entity";
+import { Meter } from "../../meters/meter.entity";
+import { MeterChange } from "../../meters/changes/meterChange.entity";
 
-import { MetersController } from "./../../src/meters/meters.controller";
+import { MetersController } from "../../meters/meters.controller";
 
 dotenv.config({ path: ".env.test.docker" });
 

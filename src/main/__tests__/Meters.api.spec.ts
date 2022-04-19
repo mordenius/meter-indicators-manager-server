@@ -6,7 +6,7 @@ import {
   emptyDataTable
 } from "./__helpers__";
 
-import { Meter } from "../src/meters/meter.entity";
+import { Meter } from "../meters/meter.entity";
 
 beforeAll(async function(): Promise<void> {
   await startApp();
