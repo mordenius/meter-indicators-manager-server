@@ -1,6 +1,5 @@
-import dotenv from "dotenv";
-
 import {
+  initializeConfiguration,
   initializeLogger,
   initializeDataSource,
   initializeServer
@@ -11,7 +10,9 @@ import { MeterChange } from "./meters/changes/meterChange.entity";
 
 import { MetersController } from "./meters/meters.controller";
 
-dotenv.config();
+const SERVICE_NAME = "main";
+
+initializeConfiguration(SERVICE_NAME);
 
 const logger = initializeLogger();
 

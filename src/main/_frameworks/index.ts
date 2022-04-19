@@ -1,4 +1,5 @@
 export { Inject, Tool, ReqisterTool, flow } from "./../../_common";
+export { Environment, initializeConfiguration } from "./../../_common";
 export { initializeServer } from "./../../_common";
 export { Logger, initializeLogger } from "../../_common";
 export {
