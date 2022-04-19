@@ -1,11 +1,11 @@
 version: "3"
 services:
   app:
-    image: meter-indicators-manager/server:test
-    container_name: meter-indicators-manager-server
+    image: meter-indicators-manager/main:test
+    container_name: meter-indicators-manager-main
     command: [ "npm", "run", "test:api" ]
     env_file:
-      - ./.env.test.docker
+      - ./config/.env.main.test.docker
     build:
       context: ./
       dockerfile: Dockerfile.test

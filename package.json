@@ -6,7 +6,7 @@
   "scripts": {
     "test": "APP_ENV=test jest",
     "test:api": "APP_ENV=test jest __tests__/**spec.ts",
-    "test:docker": "sudo docker-compose -f ./docker-compose.test.yml up --build --abort-on-container-exit && sudo docker-compose down",
+    "test:docker": "sudo docker-compose -f ./docker/docker-compose.test.yml up --build --abort-on-container-exit && sudo docker-compose down",
     "start": "node ./dist/index.js",
     "start:dev": "nodemon --exec APP_ENV=development npm run babel-node --inspect ./src/index.ts ",
     "babel-node": "babel-node ./src/index.ts --extensions \".ts\"",
