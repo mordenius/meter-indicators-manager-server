@@ -54,7 +54,7 @@
     "mongodb": "^3.7.3",
     "mysql": "^2.18.1",
     "path-to-regexp": "^6.2.0",
-    "typeorm": "^0.3.4",
+    "typeorm": "^0.3.6",
     "winston": "^3.6.0"
   }
 }
