@@ -51,6 +51,7 @@
     "aws-sdk": "^2.1106.0",
     "dotenv": "^16.0.0",
     "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.7.3",
     "mysql": "^2.18.1",
     "path-to-regexp": "^6.2.0",
     "typeorm": "^0.3.4",
