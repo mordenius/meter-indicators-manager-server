@@ -17,6 +17,7 @@ export {
   Param,
   Query,
   Body,
-  Stream
+  Stream,
+  Headers
 } from "./server/decorators";
 export { initialize as initializeServer } from "./server";
