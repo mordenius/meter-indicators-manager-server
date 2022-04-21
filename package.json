@@ -5,6 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "APP_ENV=test jest",
+    "auth:test": "APP_ENV=test jest src/auth/.*.spec.ts --testPathIgnorePatterns=src/auth/__tests__",
+    "auth:test:api": "APP_ENV=test jest src/auth/__tests__/**spec.ts",
+    "main:test": "APP_ENV=test jest src/main/.*.spec.ts --testPathIgnorePatterns=src/main/__tests__",
     "main:test:api": "APP_ENV=test jest src/main/__tests__/**spec.ts",
     "test:docker": "sudo docker-compose -f ./docker/docker-compose.test.yml up --build --abort-on-container-exit && sudo docker-compose down",
     "start": "node ./dist/index.js",
