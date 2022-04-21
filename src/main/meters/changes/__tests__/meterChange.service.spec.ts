@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import { DataSource, DeepPartial } from "typeorm";
 
 import { Meter } from "../../meter.entity";
@@ -6,17 +5,21 @@ import { MeterChange } from "../meterChange.entity";
 import { MeterChangesService } from "../meterChanges.service";
 
 import {
+  initializeConfiguration,
   initializeLogger,
   initializeDataSource
-} from "../../../../_common/index";
+} from "../../../_frameworks";
 
 let dataSource: DataSource;
 
 beforeAll(
   async (): Promise<void> => {
-    dotenv.config();
+    initializeConfiguration("main");
     const logger = initializeLogger();
-    dataSource = await initializeDataSource({ logger, entities: [Meter, MeterChange] });
+    dataSource = await initializeDataSource({
+      logger,
+      entities: [Meter, MeterChange]
+    });
   }
 );
 

@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import { DataSource, DeepPartial } from "typeorm";
 
 import { Meter } from "../meter.entity";
@@ -8,19 +7,23 @@ import { MeterChange } from "../changes/meterChange.entity";
 import { MeterChangesService } from "../changes/meterChanges.service";
 
 import {
+  initializeConfiguration,
   initializeLogger,
   initializeDataSource,
-  Logger,
-} from "../../../_common/index";
+  Logger
+} from "../../_frameworks";
 
 let logger: Logger;
 let dataSource: DataSource;
 
 beforeAll(
   async (): Promise<void> => {
-    dotenv.config();
+    initializeConfiguration("main")
     logger = initializeLogger();
-    dataSource = await initializeDataSource({ logger, entities: [Meter, MeterChange] });
+    dataSource = await initializeDataSource({
+      logger,
+      entities: [Meter, MeterChange]
+    });
   }
 );
 
@@ -29,10 +32,15 @@ afterAll(
     await dataSource.destroy();
   }
 );
+
 describe("Meter Service", (): void => {
   it("should create a new meter", async (): Promise<void> => {
     const meterChangeService = new MeterChangesService(dataSource);
-    const meterService = new MetersService(dataSource, logger, meterChangeService);
+    const meterService = new MetersService(
+      dataSource,
+      logger,
+      meterChangeService
+    );
 
     const data: DeepPartial<Meter> = {
       name: "TEST_METER",
@@ -45,9 +53,15 @@ describe("Meter Service", (): void => {
     expect(meter.currentValue).toBe(meter.currentValue);
   });
 
-  it("should create a new meter with 0 as default value", async (): Promise<void> => {
+  it("should create a new meter with 0 as default value", async (): Promise<
+    void
+  > => {
     const meterChangeService = new MeterChangesService(dataSource);
-    const meterService = new MetersService(dataSource, logger, meterChangeService);
+    const meterService = new MetersService(
+      dataSource,
+      logger,
+      meterChangeService
+    );
 
     const DEFAULT_VALUE = 0;
 
