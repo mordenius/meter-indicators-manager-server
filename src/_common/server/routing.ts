@@ -179,6 +179,10 @@ export async function route(
       stream.end(`{ "message": "${(err as Error)?.message}" }`);
     }
 
+    if (stream.writableEnded) {
+      return;
+    }
+
     if (stream.headersSent) {
       stream.end(result || "Done");
       return;
