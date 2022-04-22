@@ -3,6 +3,10 @@ import { ReqisterTool, Logger } from "../index";
 
 export const DATA_SOURCE_TOOL_NAME = "dataSource";
 
+export enum DataSourceErrorCode {
+  DUPLICATE_KEY = 11000
+}
+
 export interface DatabaseOptions {
   logger: Logger;
 }

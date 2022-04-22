@@ -22,4 +22,8 @@ export {
   Headers
 } from "./../../_common";
 
-export { initialize as initializeDataSource, DATA_SOURCE_TOOL_NAME } from "./db/connector";
+export {
+  initialize as initializeDataSource,
+  DATA_SOURCE_TOOL_NAME,
+  DataSourceErrorCode
+} from "./db/connector";
