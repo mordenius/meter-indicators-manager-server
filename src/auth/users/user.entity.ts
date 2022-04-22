@@ -23,7 +23,7 @@ export interface UserDocument extends Document, UserOutDto {
 
 const userSchema = new Schema<UserDocument>(
   {
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     pswd: { type: String, required: true, select: false }
   },
   {
