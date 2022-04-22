@@ -64,4 +64,31 @@ describe("User entity", (): void => {
     expect(user.updatedAt).not.toBeUndefined();
     expect(Number.isNaN(new Date(user.updatedAt).getTime())).toBeFalsy();
   });
+
+  it(`should decline to create a user with the same email that already in use`, async (): Promise<
+    void
+  > => {
+    const candidate = await User.findOne({ email: TEST_USER_EMAIL });
+
+    if (!candidate) {
+      expect(true).toBeFalsy();
+      return;
+    }
+
+    expect(candidate.email).toBe(TEST_USER_EMAIL);
+
+    const data: UserInDto = {
+      email: TEST_USER_EMAIL,
+      pswd: "qwerty"
+    };
+
+    try {
+      await User.create(data);
+      expect(true).toBeFalsy();
+    } catch (err) {
+      expect((err as any).message).toMatch(
+        "E11000 duplicate key error collection"
+      );
+    }
+  });
 });
