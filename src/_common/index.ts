@@ -4,7 +4,7 @@ export {
   initialize as initializeConfiguration,
   isDevOrTestEnv
 } from "./config";
-export { Logger, initialize as initializeLogger } from "./logger";
+export { Logger, LOGGER_TOOL_NAME, initialize as initializeLogger } from "./logger";
 export {
   Controller,
   Get,

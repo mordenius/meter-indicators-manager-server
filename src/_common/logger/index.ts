@@ -3,6 +3,8 @@ import { ReqisterTool, flow } from "../core";
 
 export { Logger };
 
+export const LOGGER_TOOL_NAME = "logger";
+
 function applyUnhandledRejection(logger: Logger): Logger {
   process.on("unhandledRejection", error => {
     logger.error("unhandledRejection", error);
@@ -36,4 +38,4 @@ function _initialize(options?: winston.LoggerOptions): Logger {
   );
 }
 
-export const initialize = ReqisterTool<Logger>("logger", _initialize);
+export const initialize = ReqisterTool<Logger>(LOGGER_TOOL_NAME, _initialize);
