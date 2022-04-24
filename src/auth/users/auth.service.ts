@@ -53,11 +53,12 @@ export class AuthService {
   }
 
   async logout(
-    sessionId: string,
+    accessToken: string,
     closeAllSessions: boolean = false
   ): Promise<void> {
     const sessions = new Set();
-    const session = await this.repository.findById(sessionId);
+    // const session = await this.repository.findById(sessionId);
+    const session = await this.repository.findOne({ accessToken });
 
     if (!session) {
       throw new Error("Active session not found");

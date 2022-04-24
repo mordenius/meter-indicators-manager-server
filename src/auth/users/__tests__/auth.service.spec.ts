@@ -149,7 +149,7 @@ describe("Authentication service", () => {
     expect(session?.accessToken).toBe(accessToken);
     expect(session?.refreshToken).toBe(refreshToken);
 
-    await authService.logout(accessTokenPayload.session);
+    await authService.logout(accessToken);
 
     const closedSession = await Session.findById(accessTokenPayload.session);
 
