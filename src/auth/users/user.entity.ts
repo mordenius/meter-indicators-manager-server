@@ -11,6 +11,7 @@ export interface UserInDto {
 }
 
 export interface UserOutDto {
+  _id: ObjectId;
   email: string;
   createdAt: Date;
   updatedAt: Date;
