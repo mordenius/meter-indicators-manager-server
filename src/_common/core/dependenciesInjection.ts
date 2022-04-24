@@ -16,6 +16,16 @@ export function Inject(inst: any) {
       params[i] = null;
     }
 
+    if (instancesParameters.get(inst)) {
+      let index = 0;
+      for (const param of instancesParameters.get(inst)[0]) {
+        if (param != null) {
+          params[index] = param;
+        }
+        index++;
+      }
+    }
+
     const observer = () => {
       for (const param of instancesParameters.get(inst)[0]) {
         if (param == null) {
@@ -36,11 +46,10 @@ function _attachParameter(
   instance: any,
   parameterIndex: number
 ): void {
-  const parameterOptions = instancesParameters.get(target);
+  let parameterOptions = instancesParameters.get(target);
 
   if (!parameterOptions) {
-    Reflect.defineMetadata("__args", [instance], target);
-    return;
+    parameterOptions = [[], () => {}];
   }
 
   const [parameters, notify] = parameterOptions;
@@ -48,12 +57,13 @@ function _attachParameter(
   parameters[parameterIndex] = instance;
   instancesParameters.set(target, [parameters, notify]);
 
+  Reflect.defineMetadata("__args", parameters, target);
+
   notify();
 }
 
 function _attachTool(target: any, name: string, parameterIndex: number): void {
   let instance = tools.get(name);
-
   _attachParameter(target, instance, parameterIndex);
 }
 
@@ -73,6 +83,7 @@ export function Tool(name: string) {
     let instance = tools.get(name);
 
     if (instance) {
+      _attachTool(target, name, parameterIndex);
       return;
     }
 
