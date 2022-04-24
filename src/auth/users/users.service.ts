@@ -49,7 +49,7 @@ export class UsersService {
     return user;
   }
 
-  async getById(id: ObjectId): Promise<UserOutDto> {
+  async getById(id: ObjectId): Promise<UserDocument> {
     const user = await this.repository.findById(id);
 
     if (!user) {
@@ -59,7 +59,7 @@ export class UsersService {
     return user;
   }
 
-  async getByEmail(email: string): Promise<UserOutDto> {
+  async getByEmail(email: string): Promise<UserDocument> {
     const user = await this.repository.findOne({ email });
 
     if (!user) {
@@ -67,5 +67,19 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async comparePassword({ email, pswd }: UserInDto): Promise<ObjectId> {
+    const user = await this.repository.findOne({ email }).select("pswd");
+
+    if (!user) {
+      throw new Error(`User with email ${email} not found`);
+    }
+
+    if (user.pswd === pswd) {
+      return user._id;
+    }
+
+    throw new Error("Wrong credentials");
   }
 }
