@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { startApp, stopApp, dropCollection, getLogger } from "./__helpers__";
 
 import { User, UserDocument, UserInDto } from "../user.entity";
@@ -108,6 +109,53 @@ describe("Users Service", (): void => {
       expect((err as any)?.message).toMatch(
         `User with email ${FAKE_EMAIL} not found`
       );
+    }
+  });
+
+  it("should compare passwords", async () => {
+    const usersService = new UsersService(User, getLogger());
+
+    const data: UserInDto = {
+      email: TEST_USER_EMAIL,
+      pswd: "qwerty"
+    };
+
+    const userId = await usersService.comparePassword(data);
+
+    expect(userId).toBeInstanceOf(Types.ObjectId);
+  });
+
+  it("should throw an error while compare passwords when a user not exist", async () => {
+    const usersService = new UsersService(User, getLogger());
+
+    const data: UserInDto = {
+      email: "user_not_exist@test.com",
+      pswd: "qwerty"
+    };
+
+    try {
+      await usersService.comparePassword(data);
+      expect(true).toBeFalsy();
+    } catch (err) {
+      expect((err as any).message).toMatch(
+        `User with email ${data.email} not found`
+      );
+    }
+  });
+
+  it("should throw an error while compare passwords when a user passord does not match", async () => {
+    const usersService = new UsersService(User, getLogger());
+
+    const data: UserInDto = {
+      email: TEST_USER_EMAIL,
+      pswd: "wrong_password"
+    };
+
+    try {
+      await usersService.comparePassword(data);
+      expect(true).toBeFalsy();
+    } catch (err) {
+      expect((err as any).message).toMatch("Wrong credentials");
     }
   });
 });
